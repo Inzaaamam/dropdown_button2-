@@ -28,33 +28,33 @@ class DioHelper {
   }
 }
 
-class DioClient {
-  static const connectTimeout = 24000;
-  static const receiverTimeout = 24000;
-  static const senderTimeout = 24000;
-  static const baseUrl = 'http://192.168.10.120:3001/api/resource/';
-  static Dio? dio;
-  static Future init() async {
-    dio = Dio(BaseOptions(
-        baseUrl: baseUrl,
-        receiveTimeout: const Duration(
-          seconds: connectTimeout,
-        ),
-        connectTimeout: const Duration(seconds: connectTimeout)));
-  }
+// class DioClient {
+//   static const connectTimeout = 24000;
+//   static const receiverTimeout = 24000;
+//   static const senderTimeout = 24000;
+//   static const baseUrl = 'http://192.168.10.120:3001/api/resource/';
+//   static Dio? dio;
+//   static Future init() async {
+//     dio = Dio(BaseOptions(
+//         baseUrl: baseUrl,
+//         receiveTimeout: const Duration(
+//           seconds: connectTimeout,
+//         ),
+//         connectTimeout: const Duration(seconds: connectTimeout)));
+//   }
 
-  Future getData() async {
-    try {
-      // ignore: unused_local_variable
-      final response = await dio!.post('$baseUrl/login', data: {});
-      if (response.statusCode == 200) {
-        return response.data;
-      } else {
-        throw Exception('invalid request');
-      }
-    } catch (e) {}
-  }
-}
+//   Future getData() async {
+//     try {
+//       // ignore: unused_local_variable
+//       final response = await dio!.post('$baseUrl/login', data: {});
+//       if (response.statusCode == 200) {
+//         return response.data;
+//       } else {
+//         throw Exception('invalid request');
+//       }
+//     } catch (e) {}
+//   }
+// }
 
 // import 'dart:io';
 

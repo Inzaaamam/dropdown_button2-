@@ -32,17 +32,19 @@ class _MyHomePageState extends State<MyHomePage> {
       body: ReactiveFormBuilder(
         form: buildForm,
         builder: (context, form, child) {
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: SizedBox(
-                width: double.infinity,
-                child: ReactiveCustomDropdown(
-                  formControlName: 'selectedItems',
-                  items: items,
-                  hintText: 'Select Items',
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                SizedBox(
+                  width: double.infinity,
+                  child: ReactiveCustomDropdown(
+                    formControlName: 'selectedItems',
+                    items: items,
+                    hintText: 'Select Items',
+                  ),
                 ),
-              ),
+              ],
             ),
           );
         },
@@ -76,6 +78,34 @@ class ReactiveCustomDropdown extends StatelessWidget {
           ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton2<String>(
+              openWithLongPress: false,
+              iconStyleData: IconStyleData(
+                icon: Icon(
+                  Icons.keyboard_arrow_up,
+                  size: 25,
+                  color: field.value?.isNotEmpty ?? false
+                      ? Colors.blue
+                      : Colors.grey,
+                ),
+              ),
+              dropdownStyleData: DropdownStyleData(
+                useSafeArea: true,
+                elevation: 0,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                      width: 0.5,
+                      color: const Color.fromARGB(255, 222, 218, 218)),
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: const [
+                    BoxShadow(
+                        color: Color.fromRGBO(0, 0, 0, 0.04),
+                        blurRadius: 4,
+                        spreadRadius: 2,
+                        blurStyle: BlurStyle.inner),
+                  ],
+                ),
+              ),
+              autofocus: true,
               isExpanded: true,
               hint: Text(
                 hintText,
@@ -87,11 +117,15 @@ class ReactiveCustomDropdown extends StatelessWidget {
               items: items.map((item) {
                 return DropdownMenuItem<String>(
                   value: item,
-                  enabled: false,
+                  enabled: true,
                   child: StatefulBuilder(
                     builder: (context, menuSetState) {
                       final isSelected = field.value?.contains(item) ?? false;
                       return InkWell(
+                        highlightColor: Colors.transparent,
+                        splashColor: Colors.transparent,
+                        hoverColor: Colors.transparent,
+                        focusColor: Colors.transparent,
                         onTap: () {
                           List<String> currentValues =
                               List<String>.from(field.value ?? []);
@@ -102,15 +136,16 @@ class ReactiveCustomDropdown extends StatelessWidget {
                           menuSetState(() {});
                         },
                         child: Container(
-                          // height: 40,
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0,
+                          ),
                           child: Row(
                             children: [
                               Icon(
                                 isSelected
                                     ? Icons.check_box
                                     : Icons.check_box_outline_blank,
-                                size: 20,
+                                size: 30,
                                 color: isSelected ? Colors.blue : Colors.grey,
                               ),
                               const SizedBox(width: 16),
@@ -118,8 +153,8 @@ class ReactiveCustomDropdown extends StatelessWidget {
                                 child: Text(
                                   item,
                                   style: const TextStyle(
-                                    fontSize: 14,
-                                  ),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
                             ],
@@ -144,13 +179,28 @@ class ReactiveCustomDropdown extends StatelessWidget {
                   );
                 });
               },
-              buttonStyleData: const ButtonStyleData(
-                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                height: 40,
+              buttonStyleData: ButtonStyleData(
+                overlayColor: WidgetStateProperty.resolveWith<Color?>(
+                  (Set<WidgetState> states) {
+                    if (states.contains(WidgetState.pressed)) {
+                      return Colors.transparent;
+                    }
+                    if (states.contains(WidgetState.hovered)) {
+                      return Colors.transparent;
+                    }
+                    if (states.contains(WidgetState.focused)) {
+                      return Colors.transparent;
+                    }
+                    return null;
+                  },
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+                height: 50,
                 width: double.infinity,
               ),
               menuItemStyleData: const MenuItemStyleData(
-                height: 40,
+                height: 50,
                 padding: EdgeInsets.zero,
               ),
             ),
